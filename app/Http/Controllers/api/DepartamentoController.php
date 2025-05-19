@@ -4,6 +4,9 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Departamento;
+use Illuminate\Support\Facades\DB;
+
 
 class DepartamentoController extends Controller
 {
