@@ -49,7 +49,15 @@ class MunicipioController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $municipio = Municipio::find($id);
+        if (is_null($municipio)) {
+                return abort(404);
+        }
+        $departamentos = DB::table('tb_departamento')
+            ->orderBy('depa_nomb')
+            ->get();
+
+        return json_encode(['municipio' => $municipio, 'departamentos' => $departamentos]);
     }
 
     /**
@@ -57,7 +65,27 @@ class MunicipioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'muni_nomb' => ['required',' max:255'],
+            'depa_codi' => ['required','numeric','min:1'],
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+            ]);
+        }
+
+        $municipio = Municipio::find($id);    
+        if (is_null($municipio)) {
+                return abort(404);
+        }
+
+        $municipio->muni_nomb = $request->name;
+        $municipio->depa_codi = $request->code;
+        $municipio->save();
+
+        return json_encode(['municipio' => $municipio]);
     }
 
     /**
