@@ -81,8 +81,8 @@ class DepartamentoController extends Controller
         if (is_null($departamento)) {
                 return abort(404);
             }
-        $departamento->depa_nomb = $request->name;
-        $departamento->pais_codi = $request->code;
+        $departamento->depa_nomb = $request->depa_nomb;
+        $departamento->pais_codi = $request->pais_codi;
         $departamento->save();
 
         return json_encode(['departamento' => $departamento]);

@@ -12,7 +12,11 @@ class MunicipioController extends Controller
      */
     public function index()
     {
-        //
+        $municipios = DB::table('tb_municipio')
+            ->join('tb_departamento', 'tb_municipio.depa_codi', '=', 'tb_departamento.depa_codi')
+            ->select('tb_municipio.*', 'tb_departamento.depa_nomb')
+            ->get();
+            return json_encode(['municipios' => $municipios]);
     }
 
     /**
@@ -20,7 +24,24 @@ class MunicipioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'muni_nomb' => ['required',' max:255'],
+            'depa_codi' => ['required','numeric','min:1'],
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+            ]);
+        }
+
+        $municipio = new Municipio();
+
+        $municipio->muni_nomb = $request->muni_nomb;
+        $municipio->depa_codi = $request->depa_codi;
+        $municipio->save();
+
+        return json_encode(['municipio' => $municipio]);
     }
 
     /**
