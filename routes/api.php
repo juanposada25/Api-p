@@ -30,4 +30,11 @@ Route::get('/municipios', [MunicipioController::class, 'index'])->name('municipi
 Route::post('/municipios', [MunicipioController::class, 'store'])->name('municipios.store');
 Route::get('/municipios/{municipio}', [MunicipioController::class, 'show'])->name('municipios.show');
 Route::put('/municipios/{municipio}', [MunicipioController::class, 'update'])->name('municipios.update');
-Route::delete('/municipios/{municipio}', [MunicipioController::class, 'destroy'])->name('municipios.destroy');    
+Route::delete('/municipios/{municipio}', [MunicipioController::class, 'destroy'])->name('municipios.destroy');
+
+//pais
+Route::get('/paises', [PaisController::class, 'index'])->name('paises');
+Route::post('/paises', [PaisController::class, 'store'])->name('paises.store');
+Route::get('/paises/{pais}', [PaisController::class, 'show'])->name('paises.show');
+Route::put('/paises/{pais}', [PaisController::class, 'update'])->name('paises.update');
+Route::delete('/paises/{pais}', [PaisController::class, 'destroy'])->name('paises.destroy');
