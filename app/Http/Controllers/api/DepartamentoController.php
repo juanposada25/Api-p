@@ -50,7 +50,15 @@ class DepartamentoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $departamento = Departamento::find($id);
+        if (is_null($departamento)) {
+                return abort(404);
+            }
+        $paises = DB::table('tb_pais')
+            ->orderBy('pais_nomb')
+            ->get();
+    
+        return json_encode(['departamento' => $departamento, 'paises' => $paises]);
     }
 
     /**
@@ -58,7 +66,26 @@ class DepartamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'depa_nomb' => ['required',' max:255'],
+            'pais_codi' => ['required','min:1'],
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+            ]);
+        }
+
+        $departamento = Departamento::find($id);
+        if (is_null($departamento)) {
+                return abort(404);
+            }
+        $departamento->depa_nomb = $request->name;
+        $departamento->pais_codi = $request->code;
+        $departamento->save();
+
+        return json_encode(['departamento' => $departamento]);
     }
 
     /**

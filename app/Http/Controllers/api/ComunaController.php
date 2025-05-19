@@ -79,9 +79,7 @@ class ComunaController extends Controller
                 'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
             ]);
         }
-
-
-                $comuna = Comuna::find($id); 
+ 
                 $comuna = Comuna::find($id);
                 if (is_null($comuna)) {
                     return abort(404);
