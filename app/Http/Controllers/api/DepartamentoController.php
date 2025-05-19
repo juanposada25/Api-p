@@ -12,7 +12,12 @@ class DepartamentoController extends Controller
      */
     public function index()
     {
-        //
+        $departamentos = DB::table('tb_departamento')
+        ->join('tb_pais', 'tb_departamento.pais_codi', '=', 'tb_pais.pais_codi')
+        ->select('tb_departamento.*', 'tb_pais.pais_nomb')
+        ->get();
+    
+         return json_encode(['departamentos' => $departamentos]);
     }
 
     /**
@@ -20,7 +25,24 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'depa_nomb' => ['required',' max:255'],
+            'pais_codi' => ['required','min:1'],
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+            ]);
+        }
+
+        $departamento = new Departamento();
+
+        $departamento->depa_nomb = $request->depa_nomb;
+        $departamento->pais_codi = $request->pais_codi;
+        $departamento->save();
+
+        return json_encode(['departamento' => $departamento]);
     }
 
     /**
