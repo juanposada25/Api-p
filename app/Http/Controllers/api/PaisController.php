@@ -92,6 +92,17 @@ class PaisController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pais = Pais::find($id);
+        if (is_null($pais)) {
+            return abort(404);
+        }
+        
+        $pais->delete();
+
+        $paises = DB::table('tb_pais')
+        ->select('tb_pais.*')
+        ->get();
+
+        return json_encode(['paises' => $paises, 'success' => true]);
     }
 }
