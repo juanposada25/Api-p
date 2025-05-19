@@ -83,8 +83,8 @@ class MunicipioController extends Controller
                 return abort(404);
         }
 
-        $municipio->muni_nomb = $request->name;
-        $municipio->depa_codi = $request->code;
+        $municipio->muni_nomb = $request->muni_nomb;
+        $municipio->depa_codi = $request->depa_codi;
         $municipio->save();
 
         return json_encode(['municipio' => $municipio]);

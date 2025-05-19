@@ -51,7 +51,13 @@ class PaisController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
+        $pais = Pais::find($id);
+        if (is_null($pais)) {
+            return abort(404);
+        }
+
+        return json_encode(['pais' => $pais]);
     }
 
     /**
@@ -59,7 +65,26 @@ class PaisController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'pais_nomb' => ['required',' max:255'],
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'msj' => 'Se produjo un error en la validaacion de la informacion.','statuscode' => 400
+            ]);
+        }
+
+        $pais = Pais::find($id);
+        if (is_null($pais)) {
+            return abort(404);
+        }
+
+        $pais->pais_nomb = $request->pais_nomb;
+        $pais->pais_nomb = $request->pais_nomb; 
+        $pais->save();
+
+         return json_encode(['pais' => $pais]);
     }
 
     /**
